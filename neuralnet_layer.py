@@ -44,12 +44,14 @@ class Connected(Layer):
     input_shape: tuple; Input shape of the layer.
     """
 
-    def __init__(self,n_neurons,input_shape):
+    def __init__(self,n_neurons,input_shape,activation_function,activation_function_derivative):
         self.layer_input = None
         self.input_shape = input_shape
         self.n_neurons = n_neurons
         self.W = None
         self.w_0 = None
+        self.activation_function = activation_function
+        self.activation_function = activation_function_derivative
         self.trainable = True
 
     def initialize_weights(self):
@@ -58,23 +60,39 @@ class Connected(Layer):
         self.W = np.random.uniform(-limit, limit, (self.input_shape[0], self.n_neurons))
         self.w0 = np.zeros((1, self.n_neurons))
 
-    def forward_pass(self,X):
+    def forward_pass(self,X,A):
+        """
+        Calculate the output of current layer and pass to next layer.
+        Saves activation terms to be used in backpropogation
+        :param X: The output of the previous layer
+        :param A: The ACTIVATION of the previous layer (output before activation function is applied)
+        :return:
+        """
         self.layer_input = X
-        return X.dot(self.W) + self.w0
+        self.activation_input = A
+        self.activation = np.dot(self.W,X) + self.w0
+        return self.activation_function(self.activation)
 
-    def backward_pass(self,acc_grad):
+    def backward_pass(self,previous_error,previous_W,previous_w0):
+        """
+        Update weights in layer by backpropogation and pass error term to next layer
+        :param acc_grad:
+        :return:
+        """
         W = self.W
+        w0 = self.w0
 
         if self.trainable:
-            grad_w = self.layer_input.T.dot(acc_grad)
-            grad_w0 = np.sum(acc_grad,axis = 0, keepdims = True)
+            error_term = np.dot(previous_W * previous_error) * self.activation_derivative(self.activation)
+            grad_w = np.dot(error_term,self.activation_input)
+            grad_w0 = error_term
+
         # Update the layer weights
 
         self.W = self.W_opt.update(self.W, grad_w)
         self.w0 = self.w0_opt.update(self.w0, grad_w0)
 
-        acc_grad = acc_grad.dot(W.T)
-        return acc_grad
+        return error_term,W,w0
 
     def output_shape(self):
         return(self.n_neurons,)
