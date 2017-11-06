@@ -1,7 +1,7 @@
 import numpy as np
 import math
 from learning_optimizers import SGD
-from loss_functions import l2_loss
+from loss_functions import l2,cross_entropy
 
 class Layer(object):
     """Abstract Class for Connected Layer"""
@@ -38,7 +38,7 @@ class Layer(object):
 
 class Connected(Layer):
     """
-    A fully connected neural network layer
+    A fully connected feedforward network layer
     Parameters:
     n_units: int; number of neurons in layer
     input_shape: tuple; Input shape of the layer.

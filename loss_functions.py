@@ -10,7 +10,6 @@ class Loss(object):
     def acc(selfself,y,y_pred):
         return 0
 
-
 class l2(Loss):
     def __init(self): pass
 
