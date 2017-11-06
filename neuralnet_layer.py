@@ -51,7 +51,7 @@ class Connected(Layer):
         self.W = None
         self.w_0 = None
         self.activation_function = activation_function
-        self.activation_function = activation_function_derivative
+        self.activation_function_derivative = activation_function_derivative
         self.trainable = True
 
     def initialize_weights(self):
@@ -73,7 +73,7 @@ class Connected(Layer):
         self.activation = np.dot(self.W,X) + self.w0
         return self.activation_function(self.activation)
 
-    def backward_pass(self,previous_error,previous_W,previous_w0):
+    def backward_pass(self,previous_error):
         """
         Update weights in layer by backpropogation and pass error term to next layer
         :param acc_grad:
@@ -83,8 +83,8 @@ class Connected(Layer):
         w0 = self.w0
 
         if self.trainable:
-            error_term = np.dot(previous_W * previous_error) * self.activation_derivative(self.activation)
-            grad_w = np.dot(error_term,self.activation_input)
+            error_term = np.dot(W,previous_error) * self.activation_function_derivative(self.activation)
+            grad_w = np.dot(self.activation_input,error_term)
             grad_w0 = error_term
 
         # Update the layer weights
