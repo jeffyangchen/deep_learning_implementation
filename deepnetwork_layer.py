@@ -1,5 +1,6 @@
 import numpy as np
 import math
+import copy
 from learning_optimizers import SGD
 from loss_functions import l2,cross_entropy
 
@@ -36,7 +37,7 @@ class Layer(object):
         """Shape of output produced by forward pass"""
         raise NotImplementedError
 
-class Connected(Layer):
+class Feedforward(Layer):
     """
     A fully connected feedforward network layer
     Parameters:
@@ -54,11 +55,14 @@ class Connected(Layer):
         self.activation_function_derivative = activation_function_derivative
         self.trainable = True
 
-    def initialize_weights(self):
+    def initialize_weights(self,optimizer,n_neurons):
         #Initialize Weights
+        self.n_neurons = n_neurons
         limit = 1 / math.sqrt(self.input_shape[0])
         self.W = np.random.uniform(-limit, limit, (self.input_shape[0], self.n_neurons))
         self.w0 = np.zeros((1, self.n_neurons))
+        self.W_optimizer = copy.copy(optimizer)
+        self.wo_optimizer = copy.copy(optimizer)
 
     def forward_pass(self,X,A):
         """

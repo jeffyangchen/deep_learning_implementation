@@ -54,10 +54,10 @@ def d_leaky_RLU(x,alpha = 0.01):
 	else:
 		return 1
 
-def softmax(x):
+def softplus(x):
 	"""Softmax activation"""
 	return math.log(1 + math.pow(math.e,x))
 
-def d_softmax(x):
+def d_softplus(x):
 	"""Derivative of softmax activaiton """
 	return sigmoid(x)
