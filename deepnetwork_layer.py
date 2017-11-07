@@ -88,8 +88,8 @@ class Feedforward(Layer):
 
         if self.trainable:
             error_term = np.dot(W,previous_error) * self.activation_function_derivative(self.activation)
-            grad_w = np.dot(self.activation_input,error_term)
-            grad_w0 = error_term
+            grad_w = np.mean(np.dot(self.activation_input,error_term))
+            grad_w0 = np.mean(error_term)
 
         # Update the layer weights
 

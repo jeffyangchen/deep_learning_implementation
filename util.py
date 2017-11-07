@@ -9,4 +9,3 @@ def batch_iterator(X,y = None,batch_size = 64):
 			yield X[begin:end],y[begin:end]
 		else:
 			yield X[begin:end]
-

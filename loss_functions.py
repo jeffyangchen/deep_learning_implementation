@@ -27,3 +27,7 @@ class cross_entropy(Loss):
 
     def gradient(self,y_true,y_pred):
         return (y_true / y_pred) * (1-y_true) / (1-y_pred)
+
+    def accuracy(self,y_true,y_pred):
+        total = np.shape(y_true)[0]
+        return np.sum(y_true == y_pred,axis = 0) / total
