@@ -1,4 +1,5 @@
 import numpy as np
+import progressbar
 
 def batch_iterator(X,y = None,batch_size = 64):
 	"""Generator function that divides data into batches for mini-batch SGD"""

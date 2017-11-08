@@ -24,7 +24,7 @@ class deep_network(object):
 	def intialize_network_layers(self,shape,layer_type,optimizer):
 		"""More convenient way to define network shape by adding multiple layers"""
 		for row in shape:
-			self.add_layer(layer_type,optimizer,row)
+			self.add_layer(layer_type,row)
 
 	def forward_propogation(self,X):
 		previous_layer_output = X
@@ -68,3 +68,7 @@ class deep_network(object):
 
 		print AsciiTable(table_data).table
 		print 'Number of Total Parameters: %d \n' % total_params
+
+
+net0 = deep_network(SGD,cross_entropy)
+net0.intialize_network_layers([3,3],Feedforward,SGD)
