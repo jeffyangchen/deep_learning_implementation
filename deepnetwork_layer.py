@@ -6,13 +6,13 @@ from loss_functions import l2,cross_entropy
 
 class Layer(object):
     """Abstract Class for Connected Layer"""
-    def set_input_dim(self,input_dim):
+    def set_input_shape(self,input_shape):
         """
-        Sets dimension of the inputs to this layer
+        Sets dimension of the inputs to this layer. Argument is a tuple (dim,)
         :param dim:
         :return:
         """
-        self.input_dim = input_dim
+        self.input_shape = input_shape
 
     def layer_name(self):
         """
@@ -33,7 +33,7 @@ class Layer(object):
         """Backward pass through network"""
         raise NotImplementedError()
 
-    def output_shape(selfself):
+    def output_shape(self):
         """Shape of output produced by forward pass"""
         raise NotImplementedError
 
@@ -45,7 +45,7 @@ class Feedforward(Layer):
     input_shape: tuple; Input shape of the layer.
     """
 
-    def __init__(self,n_neurons,input_shape,activation_function,activation_function_derivative):
+    def __init__(self,n_neurons = 0,input_shape = None,activation_function = None,activation_function_derivative = None):
         self.layer_input = None
         self.input_shape = input_shape
         self.n_neurons = n_neurons
@@ -55,9 +55,8 @@ class Feedforward(Layer):
         self.activation_function_derivative = activation_function_derivative
         self.trainable = True
 
-    def initialize_weights(self,optimizer,n_neurons):
+    def initialize_weights(self,optimizer):
         #Initialize Weights
-        self.n_neurons = n_neurons
         limit = 1 / math.sqrt(self.input_shape[0])
         self.W = np.random.uniform(-limit, limit, (self.input_shape[0], self.n_neurons))
         self.w0 = np.zeros((1, self.n_neurons))

@@ -1,5 +1,6 @@
 import numpy as np
 from deepnetwork_layer import *
+from activation_functions import *
 from learning_optimizers import *
 from loss_functions import *
 from util import *
@@ -9,22 +10,25 @@ class deep_network(object):
 	"""
 	network archeticture is determined by structure of individual layers
 	"""
-	def __init__(self,optimizer,loss_function):
+	def __init__(self,input_features = None,optimizer = None,loss_function = None):
 		self.layers = []
+		self.input_features = input_features
 		self.optimizer = optimizer
 		self.loss_function = loss_function
 
-	def add_layer(self,layer,n_neurons):
+	def add_layer(self,layer):
 		if self.layers:
-			layer.set_input_dim(shape = self.layers[-1].output_shape())
+			layer.set_input_shape(input_shape = self.layers[-1].output_shape())
+		else:
+			layer.set_input_shape(input_shape = (self.input_features,))
 		if hasattr(layer,'initialize_weights'):
-			layer.initialize_weights(n_neurons = n_neurons,optimizer = self.optimizer)
+			layer.initialize_weights(optimizer = self.optimizer)
 		self.layers.append(layer)
 
-	def intialize_network_layers(self,shape,layer_type,optimizer):
+	def intialize_network_layers(self,shape,layer_type,activation,activation_derivative):
 		"""More convenient way to define network shape by adding multiple layers"""
 		for row in shape:
-			self.add_layer(layer_type,row)
+			self.add_layer(layer_type(n_neurons = row,activation_function = activation,activation_function_derivative = activation_derivative))
 
 	def forward_propogation(self,X):
 		previous_layer_output = X
@@ -48,27 +52,29 @@ class deep_network(object):
 		"""Trains using batch SGD for a number of epochs"""
 		for _ in range(n_epochs):
 			batch_error = []
-			for X_batch,y_batch in batch_iterator:
+			for X_batch,y_batch in batch_iterator(X,y):
 				loss = self.batch_train(X_batch,y_batch)
 				batch_error.append(loss)
 
 	def summary(self):
-		print AsciiTable([['Model Summary']])
+		print AsciiTable([['Model Summary']]).table
 		print 'Data Input Shape %s' % str(self.layers[0].input_shape)
-
 		table_data = [["Layer Type","Number of Hidden Units","Number of Parameters","Output Shape"]]
 		total_params = 0
 		for layer in self.layers:
 			layer_name = layer.layer_name()
-			params =layer.parameters()
-			out_shape = layer.outshape()
+			#params = layer.parameters()
+			params = 3
+			out_shape = layer.output_shape()
 			hidden_units = layer.n_neurons
 			table_data.append([layer_name,str(hidden_units),str(params),str(out_shape)])
-			total_params += params
+			#total_params += params
 
 		print AsciiTable(table_data).table
-		print 'Number of Total Parameters: %d \n' % total_params
+		#print 'Number of Total Parameters: %d \n' % total_params
 
 
-net0 = deep_network(SGD,cross_entropy)
-net0.intialize_network_layers([3,3],Feedforward,SGD)
+net0 = deep_network(10,SGD,cross_entropy)
+net0.add_layer(Feedforward(n_neurons = 3,activation_function = RLU,activation_function_derivative = d_RLU))
+net0.intialize_network_layers([5,3],Feedforward,RLU,d_RLU)
+net0.summary()
