@@ -3,6 +3,7 @@ from deepnetwork_layer import *
 from learning_optimizers import *
 from loss_functions import *
 from util import *
+from terminaltables import AsciiTable
 
 class deep_network(object):
 	"""
@@ -51,3 +52,19 @@ class deep_network(object):
 				loss = self.batch_train(X_batch,y_batch)
 				batch_error.append(loss)
 
+	def summary(self):
+		print AsciiTable([['Model Summary']])
+		print 'Data Input Shape %s' % str(self.layers[0].input_shape)
+
+		table_data = [["Layer Type","Number of Hidden Units","Number of Parameters","Output Shape"]]
+		total_params = 0
+		for layer in self.layers:
+			layer_name = layer.layer_name()
+			params =layer.parameters()
+			out_shape = layer.outshape()
+			hidden_units = layer.n_neurons
+			table_data.append([layer_name,str(hidden_units),str(params),str(out_shape)])
+			total_params += params
+
+		print AsciiTable(table_data).table
+		print 'Number of Total Parameters: %d \n' % total_params

@@ -64,6 +64,10 @@ class Feedforward(Layer):
         self.W_optimizer = copy.copy(optimizer)
         self.wo_optimizer = copy.copy(optimizer)
 
+    def parameters(self):
+        #Returns the number of parameters
+        return np.prod(self.W.shape()) + np.prod(self.w0.shape())
+
     def forward_pass(self,X,A):
         """
         Calculate the output of current layer and pass to next layer.
