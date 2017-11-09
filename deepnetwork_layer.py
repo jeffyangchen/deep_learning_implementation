@@ -45,14 +45,13 @@ class Feedforward(Layer):
     input_shape: tuple; Input shape of the layer.
     """
 
-    def __init__(self,n_neurons = 0,input_shape = None,activation_function = None,activation_function_derivative = None):
+    def __init__(self,n_neurons = 0,input_shape = None,activation_function = None):
         self.layer_input = None
         self.input_shape = input_shape
         self.n_neurons = n_neurons
         self.W = None
         self.w_0 = None
-        self.activation_function = activation_function
-        self.activation_function_derivative = activation_function_derivative
+        self.activation_function = activation_function()
         self.trainable = True
 
     def initialize_weights(self,optimizer):
@@ -62,10 +61,12 @@ class Feedforward(Layer):
         self.w0 = np.zeros((1, self.n_neurons))
         self.W_optimizer = copy.copy(optimizer)
         self.wo_optimizer = copy.copy(optimizer)
+        print self.W,type(self.W),self.W.shape
+        print self.w0,type(self.W),self.W.shape
 
     def parameters(self):
         #Returns the number of parameters
-        return np.prod(self.W.shape()) + np.prod(self.w0.shape())
+        return np.prod(self.W.shape) + np.prod(self.w0.shape)
 
     def forward_pass(self,X,A):
         """
@@ -90,7 +91,7 @@ class Feedforward(Layer):
         w0 = self.w0
 
         if self.trainable:
-            error_term = np.dot(W,previous_error) * self.activation_function_derivative(self.activation)
+            error_term = np.dot(W,previous_error) * self.activation_function.derivative(self.activation)
             grad_w = np.mean(np.dot(self.activation_input,error_term),axis = 0)
             grad_w0 = np.mean(error_term,axis = 0)
 

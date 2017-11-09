@@ -25,10 +25,10 @@ class deep_network(object):
 			layer.initialize_weights(optimizer = self.optimizer)
 		self.layers.append(layer)
 
-	def intialize_network_layers(self,shape,layer_type,activation,activation_derivative):
+	def intialize_network_layers(self,shape,layer_type,activation):
 		"""More convenient way to define network shape by adding multiple layers"""
 		for row in shape:
-			self.add_layer(layer_type(n_neurons = row,activation_function = activation,activation_function_derivative = activation_derivative))
+			self.add_layer(layer_type(n_neurons = row,activation_function = activation))
 
 	def forward_propogation(self,X):
 		previous_layer_output = X
@@ -59,22 +59,23 @@ class deep_network(object):
 	def summary(self):
 		print AsciiTable([['Model Summary']]).table
 		print 'Data Input Shape %s' % str(self.layers[0].input_shape)
-		table_data = [["Layer Type","Number of Hidden Units","Number of Parameters","Output Shape"]]
+		table_data = [["Layer Type","Number of Hidden Units","Number of Parameters","Output Shape",'Activation Function']]
 		total_params = 0
 		for layer in self.layers:
 			layer_name = layer.layer_name()
-			#params = layer.parameters()
-			params = 3
+			params = layer.parameters()
 			out_shape = layer.output_shape()
 			hidden_units = layer.n_neurons
-			table_data.append([layer_name,str(hidden_units),str(params),str(out_shape)])
-			#total_params += params
+			table_data.append([layer_name,str(hidden_units),str(params),str(out_shape),str(layer.activation_function.name())])
+			total_params += params
 
 		print AsciiTable(table_data).table
-		#print 'Number of Total Parameters: %d \n' % total_params
+		print 'Number of Total Parameters: %d \n' % total_params
 
 
 net0 = deep_network(10,SGD,cross_entropy)
-net0.add_layer(Feedforward(n_neurons = 3,activation_function = RLU,activation_function_derivative = d_RLU))
-net0.intialize_network_layers([5,3],Feedforward,RLU,d_RLU)
+
+net0.intialize_network_layers([5,3],Feedforward,RLU)
+
+net0.add_layer(Feedforward(n_neurons = 3,activation_function = sigmoid))
 net0.summary()
