@@ -36,8 +36,8 @@ class deep_network(object):
 	def forward_propogation(self,X):
 		previous_layer_output = X
 		for layer in self.layers:
-			previous_layer_output,previous_layer_output_linear = layer.forward_pass(previous_layer_output,previous_layer_output_linear)
-		return previous_layer_output,previous_layer_output_linear
+			previous_layer_output = layer.forward_pass(previous_layer_output)
+		return previous_layer_output
 
 	def back_propogation(self,loss_grad):
 		previous_error = loss_grad

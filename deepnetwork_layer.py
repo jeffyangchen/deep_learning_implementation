@@ -66,7 +66,7 @@ class Feedforward(Layer):
         #Returns the number of parameters
         return np.prod(self.W.shape) + np.prod(self.w0.shape)
 
-    def forward_pass(self,X,A):
+    def forward_pass(self,X):
         """
         Calculate the output of current layer and pass to next layer.
         Saves activation terms to be used in backpropogation
@@ -75,6 +75,7 @@ class Feedforward(Layer):
         :return:
         """
         self.layer_input = X
+        self.activation_input = self.layer_input
         self.activation_input = A
         self.activation = np.dot(self.W,X) + self.w0
         return self.activation_function(self.activation),self.activation_input
