@@ -15,5 +15,4 @@ mnist_net = deep_network(input_features =784 ,optimizer = SGD, loss_function = c
 mnist_net.add_layer(Feedforward(n_neurons = 10,activation_function = RLU))
 mnist_net.add_layer(Feedforward(n_neurons = 10,activation_function = sigmoid))
 mnist_net.summary()
-mnist_net.fit(X_train,y_train)
-
+mnist_net.fit(X_train,y_train,n_epochs = 1,batch_size = 64)

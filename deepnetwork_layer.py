@@ -77,7 +77,7 @@ class Feedforward(Layer):
         self.layer_input = X
         self.activation_input = A
         self.activation = np.dot(self.W,X) + self.w0
-        return self.activation_function(self.activation)
+        return self.activation_function(self.activation),self.activation_input
 
     def backward_pass(self,previous_error):
         """
@@ -102,3 +102,20 @@ class Feedforward(Layer):
 
     def output_shape(self):
         return(self.n_neurons,)
+
+class Activation(Layer):
+    """
+    Layer that applies an activation function e.g. sigmoid or RLU
+    """
+    def __init__(self,activation_function):
+        self.activation_function = activation_function()
+
+    def forward_pass(self,X,training):
+        self.layer_input = X
+        return self.activation_func(X)
+
+    def backward_pass(self,error):
+        return error * self.activation_function.derivative(self.layer_input)
+
+    def output_shape(self):
+        return self.input_shape

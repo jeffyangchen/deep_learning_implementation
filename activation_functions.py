@@ -15,14 +15,20 @@ class Activation(object):
 	def name(self):
 		return self.__class__.__name__
 
+class Identity(object):
+	def __call__(self,z):
+		return z
+
+	def derivative(self,z):
+		return np.ones(z.shape)
+
 class sigmoid(Activation):
 
 	def __call__(self,z):
 		return float(1) / 1 + np.exp(-z)
 
 	def derivative(self,z):
-		return self.evaluate(z) * self.evaluate(1-z)
-
+		return (float(1) / 1 + np.exp(-z)) * (float(1) / 1 + np.exp(1 + z))
 
 class RLU(Activation):
 

@@ -36,16 +36,16 @@ class deep_network(object):
 	def forward_propogation(self,X):
 		previous_layer_output = X
 		for layer in self.layers:
-			previous_layer_output = layer.forward_pass(previous_layer_output,training = True)
-		return previous_layer_output
+			previous_layer_output,previous_layer_output_linear = layer.forward_pass(previous_layer_output,previous_layer_output_linear)
+		return previous_layer_output,previous_layer_output_linear
 
-	def backward_propogation(self,loss_grad):
+	def back_propogation(self,loss_grad):
 		previous_error = loss_grad
 		for layer in reversed(self.layers):
 			previous_error = layer.backward_pass(previous_error)
 
 	def batch_train(self,X,y):
-		y_pred = self.forward_pass(X)
+		y_pred = self.forward_propogation(X)
 		loss = self.loss_function.loss(y,y_pred)
 		error = self.loss_function.gradient(y,y_pred)
 		self.backward_pass(error)
@@ -53,7 +53,8 @@ class deep_network(object):
 
 	def fit(self,X,y,n_epochs,batch_size):
 		"""Trains using batch SGD for a number of epochs"""
-		for _ in range(n_epochs):
+		#for _ in range(n_epochs):
+		for _ in self.progressbar(range(n_epochs)):
 			batch_error = []
 			for X_batch,y_batch in batch_iterator(X,y):
 				loss = self.batch_train(X_batch,y_batch)

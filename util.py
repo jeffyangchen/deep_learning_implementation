@@ -29,4 +29,4 @@ def unwind_data(data):
 		X.append(row[0])
 		y.append(row[1])
 
-	return X,y
+	return np.asarray(X),np.asarray(y)
