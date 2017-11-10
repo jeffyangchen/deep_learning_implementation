@@ -29,12 +29,12 @@ def load_data():
     entry of the tuple.
     The ``validation_data`` and ``test_data`` are similar, except
     each contains only 10,000 images.
-    This is a nice data format, but for use in neural networks it's
+    This is a nice dataR format, but for use in neural networks it's
     helpful to modify the format of the ``training_data`` a little.
     That's done in the wrapper function ``load_data_wrapper()``, see
     below.
     """
-    f = gzip.open('../data/mnist.pkl.gz', 'rb')
+    f = gzip.open('data/mnist.pkl.gz', 'rb')
     training_data, validation_data, test_data = cPickle.load(f)
     f.close()
     return (training_data, validation_data, test_data)
@@ -75,3 +75,4 @@ def vectorized_result(j):
     e = np.zeros((10, 1))
     e[j] = 1.0
     return e
+
