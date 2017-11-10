@@ -5,6 +5,8 @@ from learning_optimizers import *
 from loss_functions import *
 from util import *
 from terminaltables import AsciiTable
+import progressbar
+
 
 class deep_network(object):
 	"""
@@ -15,6 +17,7 @@ class deep_network(object):
 		self.input_features = input_features
 		self.optimizer = optimizer
 		self.loss_function = loss_function
+		self.progressbar = progressbar.ProgressBar(widgets = bar_widgets)
 
 	def add_layer(self,layer):
 		if self.layers:
@@ -73,9 +76,11 @@ class deep_network(object):
 		print 'Number of Total Parameters: %d \n' % total_params
 
 
-net0 = deep_network(10,SGD,cross_entropy)
 
-net0.intialize_network_layers([5,3],Feedforward,RLU)
+if __name__ == '__main__':
+	net0 = deep_network(10,SGD,cross_entropy)
 
-net0.add_layer(Feedforward(n_neurons = 3,activation_function = sigmoid))
-net0.summary()
+	net0.intialize_network_layers([5,3],Feedforward,RLU)
+
+	net0.add_layer(Feedforward(n_neurons = 3,activation_function = sigmoid))
+	net0.summary()

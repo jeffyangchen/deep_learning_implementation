@@ -61,8 +61,6 @@ class Feedforward(Layer):
         self.w0 = np.zeros((1, self.n_neurons))
         self.W_optimizer = copy.copy(optimizer)
         self.wo_optimizer = copy.copy(optimizer)
-        print self.W,type(self.W),self.W.shape
-        print self.w0,type(self.W),self.W.shape
 
     def parameters(self):
         #Returns the number of parameters
