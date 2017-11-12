@@ -25,13 +25,14 @@ class Cross_Entropy(Loss):
     def loss(self,y_true,y_pred):
         # try:
         y_pred = np.clip(y_pred, 1e-15, 1 - 1e-15)
-        return - y_true * np.log(y_pred) - (1-y_true) * np.log(1-y_pred)
+        return  - y_true * np.log(y_pred) - (1-y_true) * np.log(1-y_pred)
         #except:
             # print 'y_true.shape',y_true.shape
             # print 'y_pred.shape',y_pred.shape
 
     def gradient(self,y_true,y_pred):
-        return (y_true / y_pred) * (1-y_true) / (1-y_pred)
+        y_pred = np.clip(y_pred, 1e-15, 1 - 1e-15)
+        return - (y_true / y_pred) +  (1-y_true) / (1-y_pred)
 
     def accuracy(self,y_true,y_pred):
         total = float(np.shape(y_true)[0])

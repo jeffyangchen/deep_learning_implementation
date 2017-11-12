@@ -58,8 +58,8 @@ class Feedforward(Layer):
         limit = 1 / math.sqrt(self.input_shape[0])
         self.W = np.random.uniform(-limit, limit, (self.input_shape[0], self.n_neurons))
         self.w0 = np.zeros((1, self.n_neurons))
-        self.W_optimizer = optimizer()
-        self.w0_optimizer = optimizer()
+        self.W_optimizer = optimizer
+        self.w0_optimizer = optimizer
 
     def parameters(self):
         #Returns the number of parameters
@@ -89,7 +89,7 @@ class Feedforward(Layer):
         w0 = self.w0
         grad_w = np.dot(self.layer_input.T,previous_error)
         grad_w0 = np.sum(previous_error,axis = 0,keepdims = True)
-        # print 'W shape',W.shape
+        #print 'W shape',W.shape
         #print 'Layer Input shape',self.layer_input.shape
         #print 'previus_error.shape',previous_error.shape
         #print 'grad_w shape',grad_w.shape

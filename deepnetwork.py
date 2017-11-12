@@ -61,7 +61,7 @@ class deep_net(object):
 		accuracy = self.loss_function.accuracy(y, y_pred)
 		return loss, accuracy
 
-	def fit(self,X,y,n_epochs,batch_size):
+	def fit(self,X,y,n_epochs):
 		"""Trains using batch SGD for a number of epochs"""
 		#for _ in range(n_epochs):
 		for _ in range(n_epochs):
