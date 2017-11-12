@@ -8,7 +8,7 @@ from terminaltables import AsciiTable
 import progressbar
 
 
-class deep_network(object):
+class deep_net(object):
 	"""
 	network archeticture is determined by structure of individual layers
 	"""
@@ -16,16 +16,18 @@ class deep_network(object):
 		self.layers = []
 		self.input_features = input_features
 		self.optimizer = optimizer
-		self.loss_function = loss_function
-		self.progressbar = progressbar.ProgressBar(widgets = bar_widgets)
+		self.loss_function = loss_function()
+		#self.progressbar = progressbar.ProgressBar(widgets = bar_widgets)
 
 	def add_layer(self,layer):
 		if self.layers:
 			layer.set_input_shape(input_shape = self.layers[-1].output_shape())
 		else:
 			layer.set_input_shape(input_shape = (self.input_features,))
+
 		if hasattr(layer,'initialize_weights'):
 			layer.initialize_weights(optimizer = self.optimizer)
+
 		self.layers.append(layer)
 
 	def intialize_network_layers(self,shape,layer_type,activation):
@@ -46,31 +48,39 @@ class deep_network(object):
 
 	def batch_train(self,X,y):
 		y_pred = self.forward_propogation(X)
-		loss = self.loss_function.loss(y,y_pred)
+		loss = np.mean(self.loss_function.loss(y,y_pred))
 		error = self.loss_function.gradient(y,y_pred)
-		self.backward_pass(error)
-		return loss
+		accuracy = self.loss_function.accuracy(y,y_pred)
+		#print 'error shape',error.shape
+		self.back_propogation(error)
+		return loss,accuracy
+
+	def batch_test(self,X,y):
+		y_pred = self.forward_propogation(X)
+		loss = np.mean(self.loss_function.loss(y, y_pred))
+		accuracy = self.loss_function.accuracy(y, y_pred)
+		return loss, accuracy
 
 	def fit(self,X,y,n_epochs,batch_size):
 		"""Trains using batch SGD for a number of epochs"""
 		#for _ in range(n_epochs):
-		for _ in self.progressbar(range(n_epochs)):
+		for _ in range(n_epochs):
 			batch_error = []
 			for X_batch,y_batch in batch_iterator(X,y):
-				loss = self.batch_train(X_batch,y_batch)
+				loss,accuracy = self.batch_train(X_batch,y_batch)
 				batch_error.append(loss)
 
 	def summary(self):
-		print AsciiTable([['Model Summary']]).table
 		print 'Data Input Shape %s' % str(self.layers[0].input_shape)
-		table_data = [["Layer Type","Number of Hidden Units","Number of Parameters","Output Shape",'Activation Function']]
+		print AsciiTable([['Model Summary']]).table
+		table_data = [["Layer Type","Output Shape"]]
 		total_params = 0
 		for layer in self.layers:
 			layer_name = layer.layer_name()
 			params = layer.parameters()
 			out_shape = layer.output_shape()
-			hidden_units = layer.n_neurons
-			table_data.append([layer_name,str(hidden_units),str(params),str(out_shape),str(layer.activation_function.name())])
+			#hidden_units = layer.n_neurons
+			table_data.append([layer_name,str(params),str(out_shape)])
 			total_params += params
 
 		print AsciiTable(table_data).table
@@ -79,7 +89,7 @@ class deep_network(object):
 
 
 if __name__ == '__main__':
-	net0 = deep_network(10,SGD,cross_entropy)
+	net0 = deep_net(10, SGD, Cross_Entropy)
 
 	net0.intialize_network_layers([5,3],Feedforward,RLU)
 

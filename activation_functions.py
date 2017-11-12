@@ -3,7 +3,7 @@ import numpy as np
 
 #NonLinear activation functions
 
-class Activation(object):
+class Activation_Function(object):
 	"""Abstract Class for activation function"""
 	def derivative(self):
 		"""
@@ -22,15 +22,15 @@ class Identity(object):
 	def derivative(self,z):
 		return np.ones(z.shape)
 
-class sigmoid(Activation):
+class Sigmoid(Activation_Function):
 
 	def __call__(self,z):
-		return float(1) / 1 + np.exp(-z)
+		return float(1) / (1 + np.exp(-z))
 
 	def derivative(self,z):
-		return (float(1) / 1 + np.exp(-z)) * (float(1) / 1 + np.exp(1 + z))
+		return self.__call__(z) * self.__call__(-z)
 
-class RLU(Activation):
+class RLU(Activation_Function):
 
 	def __call__(self, z):
 		return np.where(z <= 0,0,z)
@@ -38,7 +38,7 @@ class RLU(Activation):
 	def derivative(self, z):
 		return np.where(z <= 0,0,1)
 
-class Leaky_RLU(Activation):
+class Leaky_RLU(Activation_Function):
 
 	def __init__(self,alpha = 0.1):
 		self.alpha = alpha
@@ -49,7 +49,7 @@ class Leaky_RLU(Activation):
 	def derivative(self, z):
 		return np.where(x<=0,self.alpha,1)
 
-class softplus(Activation):
+class Softplus(Activation_Function):
 
 	def init(self):
 		pass
@@ -58,48 +58,13 @@ class softplus(Activation):
 		return np.log(1+np.exp(z))
 
 	def derivative(self,z):
-		return sigmoid(z)
+		return float(1) / 1 + np.exp(-z)
 
-# def sigmoid(x):
-# 	"""Sigmoid Activation"""
-# 	return 1 / (1 + math.pow(math.e,-x))
-#
-# def d_sigmoid(x):
-# 	"""Derivative of Sigmoid"""
-# 	return sigmoid(x) * sigmoid(1-x)
-#
-# def RLU(x):
-# 	"""Rectified Linear Unit (RLU) Activation"""
-# 	if x <= 0:
-# 		return 0
-# 	else:
-# 		return x
-#
-# def d_RLU(x):
-# 	"""Derivative of RLU"""
-# 	if x <= 0:
-# 		return 0
-# 	else:
-# 		return 1
-#
-# def leaky_RLU(x,alpha = 0.01):
-# 	"""Parameterized RLU Activation"""
-# 	if x <= 0:
-# 		alpha * x
-# 	else:
-# 		return x
-#
-# def d_leaky_RLU(x,alpha = 0.01):
-# 	"""Derivitave of Parameterized RLU"""
-# 	if x <= 0:
-# 		return alpha
-# 	else:
-# 		return 1
-#
-# def softplus(x):
-# 	"""Softmax activation"""
-# 	return math.log(1 + math.pow(math.e,x))
-#
-# def d_softplus(x):
-# 	"""Derivative of softmax activaiton """
-# 	return sigmoid(x)
+class Softmax(Activation_Function):
+    def __call__(self, x):
+        e_x = np.exp(x - np.max(x, axis=-1, keepdims=True))
+        return e_x / np.sum(e_x, axis=-1, keepdims=True)
+
+    def derivative(self, x):
+        p = self.__call__(x)
+        return p * (1 - p)

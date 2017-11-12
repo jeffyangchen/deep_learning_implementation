@@ -29,7 +29,7 @@ def load_data():
     entry of the tuple.
     The ``validation_data`` and ``test_data`` are similar, except
     each contains only 10,000 images.
-    This is a nice dataR format, but for use in neural networks it's
+    This is a nice data format, but for use in neural networks it's
     helpful to modify the format of the ``training_data`` a little.
     That's done in the wrapper function ``load_data_wrapper()``, see
     below.
@@ -58,13 +58,19 @@ def load_data_wrapper():
     turn out to be the most convenient for use in our neural network
     code."""
     tr_d, va_d, te_d = load_data()
-    training_inputs = [np.reshape(x, (784, 1)) for x in tr_d[0]]
+    training_inputs = [np.reshape(x, (784,)) for x in tr_d[0]]
     training_results = [vectorized_result(y) for y in tr_d[1]]
     training_data = zip(training_inputs, training_results)
-    validation_inputs = [np.reshape(x, (784, 1)) for x in va_d[0]]
-    validation_data = zip(validation_inputs, va_d[1])
-    test_inputs = [np.reshape(x, (784, 1)) for x in te_d[0]]
-    test_data = zip(test_inputs, te_d[1])
+
+    validation_inputs = [np.reshape(x, (784,)) for x in va_d[0]]
+    #validation_data = zip(validation_inputs, va_d[1])
+    validation_results = [vectorized_result(y) for y in va_d[1]]
+    validation_data = zip(validation_inputs,validation_results)
+
+    test_inputs = [np.reshape(x, (784,)) for x in te_d[0]]
+    #test_data = zip(test_inputs, te_d[1])
+    test_results = [vectorized_result(y) for y in te_d[1]]
+    test_data = zip(test_inputs,test_results)
     return (training_data, validation_data, test_data)
 
 def vectorized_result(j):
@@ -72,7 +78,7 @@ def vectorized_result(j):
     position and zeroes elsewhere.  This is used to convert a digit
     (0...9) into a corresponding desired output from the neural
     network."""
-    e = np.zeros((10, 1))
+    e = np.zeros((10,))
     e[j] = 1.0
     return e
 
