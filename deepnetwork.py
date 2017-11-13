@@ -5,8 +5,6 @@ from learning_optimizers import *
 from loss_functions import *
 from util import *
 from terminaltables import AsciiTable
-import progressbar
-
 
 class deep_net(object):
 	"""
@@ -31,10 +29,10 @@ class deep_net(object):
 
 		self.layers.append(layer)
 
-	def intialize_network_layers(self,shape,layer_type,activation):
+	def intialize_network_layers(self,shape,layer_type):
 		"""More convenient way to define network shape by adding multiple layers"""
 		for row in shape:
-			self.add_layer(layer_type(n_neurons = row,activation_function = activation))
+			self.add_layer(layer_type(n_neurons = row))
 
 	def forward_propogation(self,X):
 		previous_layer_output = X

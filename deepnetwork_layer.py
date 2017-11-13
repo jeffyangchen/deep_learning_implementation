@@ -1,8 +1,5 @@
 import numpy as np
 import math
-import copy
-from learning_optimizers import SGD
-from loss_functions import L2,Cross_Entropy
 
 class Layer(object):
     """Abstract Class for Layer"""
