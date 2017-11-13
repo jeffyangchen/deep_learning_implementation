@@ -6,7 +6,7 @@ from loss_functions import *
 from util import *
 from terminaltables import AsciiTable
 
-class deep_net(object):
+class neural_net(object):
 	"""
 	network archeticture is determined by structure of individual layers
 	"""
@@ -89,7 +89,7 @@ class deep_net(object):
 
 
 if __name__ == '__main__':
-	net0 = deep_net(10, SGD, Cross_Entropy)
+	net0 = neural_net(10, SGD, Cross_Entropy)
 
 	net0.intialize_network_layers([5,3], Connected, RLU)
 

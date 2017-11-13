@@ -1,4 +1,4 @@
-from deepnetwork import deep_net
+from deepnetwork import neural_net
 from deepnetwork_layer import *
 from mnist_loader import load_data_wrapper
 from activation_functions import *
@@ -21,7 +21,7 @@ X_test,y_test = unwind_data_wrapper(test_data)
 X_val, y_val = unwind_data_wrapper(validation_data)
 
 n_features = 784
-mnist_net = deep_net(input_features = n_features, optimizer = SGD(learning_rate = 0.01,batch_size = 64), loss_function = Cross_Entropy)
+mnist_net = neural_net(input_features = n_features, optimizer = SGD(learning_rate = 0.01, batch_size = 64), loss_function = Cross_Entropy)
 mnist_net.add_layer(Connected(n_neurons = 100))
 mnist_net.add_layer(Activation(activation_function = RLU))
 mnist_net.add_layer(Connected(n_neurons = 10))
