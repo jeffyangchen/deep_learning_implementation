@@ -55,12 +55,16 @@ print y[0].shape
 
 n_features = 784
 mnist_net = deep_net(input_features = n_features, optimizer = SGD(learning_rate = 0.01,batch_size = 64), loss_function = Cross_Entropy)
-mnist_net.add_layer(Feedforward(n_neurons = 100))
+mnist_net.add_layer(Connected(n_neurons = 100))
 mnist_net.add_layer(Activation(activation_function = Softplus))
-mnist_net.add_layer(Feedforward(n_neurons = 10))
+mnist_net.add_layer(Connected(n_neurons = 10))
 mnist_net.add_layer(Activation(activation_function = Softmax))
 mnist_net.summary()
 mnist_net.fit(X,y,n_epochs = 50)
+
+errors = mnist_net.errors['training']
+print errors
+plotter(range(len(errors)),[errors])
 
 loss,accuracy = mnist_net.batch_test(X_test,y_test)
 print accuracy

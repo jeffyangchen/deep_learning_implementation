@@ -37,9 +37,9 @@ class Layer(object):
         """Shape of output produced by forward pass"""
         raise NotImplementedError
 
-class Feedforward(Layer):
+class Connected(Layer):
     """
-    A fully connected feedforward network layer
+    A fully connected network layer
     Parameters:
     n_units: int; number of neurons in layer
     input_shape: tuple; Input shape of the layer.
@@ -110,6 +110,9 @@ class Activation(Layer):
     """
     def __init__(self,activation_function = None):
         self.activation_function = activation_function()
+
+    def layer_name(self):
+        return self.activation_function.__class__.__name__
 
     def forward_pass(self,X,training = True):
         self.layer_input = X

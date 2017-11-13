@@ -17,6 +17,7 @@ class deep_net(object):
 		self.input_features = input_features
 		self.optimizer = optimizer
 		self.loss_function = loss_function()
+		self.errors = {'training':[],'validation':[]}
 		#self.progressbar = progressbar.ProgressBar(widgets = bar_widgets)
 
 	def add_layer(self,layer):
@@ -69,11 +70,12 @@ class deep_net(object):
 			for X_batch,y_batch in batch_iterator(X,y):
 				loss,accuracy = self.batch_train(X_batch,y_batch)
 				batch_error.append(loss)
+			self.errors['training'].append(np.mean(batch_error))
 
 	def summary(self):
 		print 'Data Input Shape %s' % str(self.layers[0].input_shape)
 		print AsciiTable([['Model Summary']]).table
-		table_data = [["Layer Type","Output Shape"]]
+		table_data = [["Layer Type","Number of Parameters","Output Shape"]]
 		total_params = 0
 		for layer in self.layers:
 			layer_name = layer.layer_name()
@@ -91,7 +93,7 @@ class deep_net(object):
 if __name__ == '__main__':
 	net0 = deep_net(10, SGD, Cross_Entropy)
 
-	net0.intialize_network_layers([5,3],Feedforward,RLU)
+	net0.intialize_network_layers([5,3], Connected, RLU)
 
-	net0.add_layer(Feedforward(n_neurons = 3,activation_function = sigmoid))
+	net0.add_layer(Connected(n_neurons = 3, activation_function = sigmoid))
 	net0.summary()

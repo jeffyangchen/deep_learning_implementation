@@ -1,6 +1,7 @@
 import numpy as np
 import progressbar
 import plotly
+from plotly import graph_objs as go
 
 bar_widgets = [
     'Training: ', progressbar.Percentage(), ' ', progressbar.Bar(marker="-", left="[", right="]"),
@@ -31,13 +32,13 @@ def unwind_data(data):
 
 	return np.asarray(X),np.asarray(y)
 
-def plotter(x,Y,title = None,filename = None):
+def plotter(x,Y,title = None,filename = 'plot.html'):
 	data = []
 	for row in Y:
 		trace = go.Scatter(
 			x = x,
-			y = row[0],
-			name = row[1],
+			y = row,
+			name = 'Errors',
 			mode = 'lines+markers'
 		)
 		data.append(trace)

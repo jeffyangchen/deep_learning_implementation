@@ -1,4 +1,4 @@
-# deep_learning_implementation
+# Deep Learning Implementation
 Implementation of deep learning algorithms for self understanding.
 
 ### References:
