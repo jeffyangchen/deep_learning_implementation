@@ -44,7 +44,7 @@ class Leaky_RLU(Activation_Function):
 		self.alpha = alpha
 
 	def __call__(self, z):
-		return np.where(x<=0,self.alpha*z,z)
+		return np.where(z<=0,self.alpha*z,z)
 
 	def derivative(self, z):
 		return np.where(x<=0,self.alpha,1)
@@ -58,7 +58,7 @@ class Softplus(Activation_Function):
 		return np.log(1+np.exp(z))
 
 	def derivative(self,z):
-		return float(1) / 1 + np.exp(-z)
+		return float(1) / (1 + np.exp(-z))
 
 class Softmax(Activation_Function):
     def __call__(self, x):

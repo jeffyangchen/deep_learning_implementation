@@ -25,12 +25,12 @@ def train_test_split(X, y, test_size=0.5, shuffle=True, seed=None):
 
     return X_train, X_test, y_train, y_test
 
-data = datasets.load_digits()
-X = data.data
-y = to_categorical(data.target)
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.4, seed=1)
-print X.shape
-print y.shape
+# data = datasets.load_digits()
+# X = data.data
+# y = to_categorical(data.target)
+# X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.4, seed=1)
+# print X.shape
+# print y.shape
 
 # #
 # def batch_iterator(X,y = None,batch_size = 64):
@@ -44,22 +44,26 @@ print y.shape
 # 			yield X[begin:end]
 
 
-# training_data,validation_data,test_data = load_data_wrapper()
-#
-# X,y = unwind_data(training_data)
-# X_test,y_test = unwind_data(test_data)
-#
-# print X[0].shape
-# print y[0].shape
+training_data,validation_data,test_data = load_data_wrapper()
 
-n_features = 64
-mnist_net = deep_net(input_features = n_features, optimizer = SGD(learning_rate = 0.01,batch_size = 256), loss_function = Cross_Entropy)
+X,y = unwind_data(training_data)
+X_test,y_test = unwind_data(test_data)
+X_val, y_val = unwind_data(validation_data)
+
+print X[0].shape
+print y[0].shape
+
+n_features = 784
+mnist_net = deep_net(input_features = n_features, optimizer = SGD(learning_rate = 0.01,batch_size = 64), loss_function = Cross_Entropy)
 mnist_net.add_layer(Feedforward(n_neurons = 100))
-mnist_net.add_layer(Activation(activation_function = Sigmoid))
+mnist_net.add_layer(Activation(activation_function = Softplus))
 mnist_net.add_layer(Feedforward(n_neurons = 10))
 mnist_net.add_layer(Activation(activation_function = Softmax))
 mnist_net.summary()
 mnist_net.fit(X,y,n_epochs = 50)
 
 loss,accuracy = mnist_net.batch_test(X_test,y_test)
+print accuracy
+
+loss,accuracy = mnist_net.batch_test(X_val,y_val)
 print accuracy
