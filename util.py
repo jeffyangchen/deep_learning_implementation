@@ -18,7 +18,7 @@ def batch_iterator(X,y = None,batch_size = 64):
 		else:
 			yield X[begin:end]
 
-def unwind_data(data):
+def unwind_data_wrapper(data):
 	"""
 	Unwinds tuple data into two vectors X,y
 	:param data:
@@ -49,7 +49,6 @@ def to_categorical(x, n_col=None):
     one_hot = np.zeros((x.shape[0], n_col))
     one_hot[np.arange(x.shape[0]), x] = 1
     return one_hot
-
 
 def plotter(x,Y,labels,title = None,filename = 'plot.html'):
 	data = []

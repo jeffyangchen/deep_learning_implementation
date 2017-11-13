@@ -16,9 +16,9 @@ from sklearn import datasets
 
 training_data,validation_data,test_data = load_data_wrapper()
 
-X,y = unwind_data(training_data)
-X_test,y_test = unwind_data(test_data)
-X_val, y_val = unwind_data(validation_data)
+X,y = unwind_data_wrapper(training_data)
+X_test,y_test = unwind_data_wrapper(test_data)
+X_val, y_val = unwind_data_wrapper(validation_data)
 
 n_features = 784
 mnist_net = deep_net(input_features = n_features, optimizer = SGD(learning_rate = 0.01,batch_size = 64), loss_function = Cross_Entropy)
