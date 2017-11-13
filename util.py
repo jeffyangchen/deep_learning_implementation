@@ -1,6 +1,6 @@
 import numpy as np
 import progressbar
-
+import plotly
 
 bar_widgets = [
     'Training: ', progressbar.Percentage(), ' ', progressbar.Bar(marker="-", left="[", right="]"),
@@ -30,3 +30,19 @@ def unwind_data(data):
 		y.append(row[1])
 
 	return np.asarray(X),np.asarray(y)
+
+def plotter(x,Y,title = None,filename = None):
+	data = []
+	for row in Y:
+		trace = go.Scatter(
+			x = x,
+			y = row[0],
+			name = row[1],
+			mode = 'lines+markers'
+		)
+		data.append(trace)
+	layout = go.Layout(
+		title = title
+	)
+	fig = go.Figure(data = data,layout=layout)
+	plotly.offline.plot(fig, filename=filename)
