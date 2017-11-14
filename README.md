@@ -36,10 +36,23 @@ labels = ['Training Error','Validation Error']
 plotter(range(len(training_errors)),[training_errors,validation_errors],labels = labels)
 
 loss,accuracy = mnist_net.batch_test(X_test,y_test)
-print accuracy
+print 'Accuracy:',accuracy
 ```
+    $mnist_net.py
+    +---------------+
+    | Model Summary |
+    +---------------+
+    +------------+----------------------+--------------+
+    | Layer Type | Number of Parameters | Output Shape |
+    +------------+----------------------+--------------+
+    | Connected  | 78500                | (100,)       |
+    | RLU        | 0                    | (100,)       |
+    | Connected  | 1010                 | (10,)        |
+    | Softmax    | 0                    | (10,)        |
+    +------------+----------------------+--------------+
+    Number of Total Parameters: 79510 
+    
+    Accuracy: 0.9628
 
-![alt text](https://github.com/jeffyangchen/deep_learning_implementation/blob/master/error_plot.png)
 
 ![alt text](error_plot.png)
-
