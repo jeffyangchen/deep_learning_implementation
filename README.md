@@ -40,3 +40,6 @@ print accuracy
 ```
 
 ![alt text](https://github.com/jeffyangchen/deep_learning_implementation/blob/master/newplot.png)
+
+![alt text](error_plot.png)
+
