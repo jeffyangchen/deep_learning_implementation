@@ -33,10 +33,10 @@ training_errors,training_accuracy = mnist_net.errors['training'],mnist_net.accur
 validation_errors,validation_accuracy = mnist_net.errors['validation'],mnist_net.accuracy['validation']
 
 labels = ['Training Error','Validation Error']
-plotter(range(len(training_errors)),[training_errors,validation_errors],labels = labels,title = 'Error Plot')
+plotter(range(len(training_errors)),[training_errors,validation_errors],labels = labels,title = 'Error Plot',filename = 'Error Plot.html')
 
 labels = ['Training Accuracy','Validation Accuracy']
-plotter(range(len(training_accuracy)),[training_accuracy,validation_accuracy],labels = labels,title = 'Accuracy Plot')
+plotter(range(len(training_accuracy)),[training_accuracy,validation_accuracy],labels = labels,title = 'Accuracy Plot',filename = 'Accuracy Plot.html')
 
 loss,accuracy = mnist_net.batch_test(X_test,y_test)
 print accuracy
