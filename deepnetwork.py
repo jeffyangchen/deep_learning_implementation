@@ -16,6 +16,7 @@ class neural_net(object):
 		self.optimizer = optimizer
 		self.loss_function = loss_function()
 		self.errors = {'training':[],'validation':[]}
+		self.accuracy = {'training':[],'validation':[]}
 		#self.progressbar = progressbar.ProgressBar(widgets = bar_widgets)
 		self.validation_set = validation_set
 		if self.validation_set is not None:
@@ -76,8 +77,11 @@ class neural_net(object):
 				if self.validation_set == None:
 					print 'Validation Set Needed! (Set Validation_test to False on fit)'
 				else:
-					validation_error,accuracy = self.batch_test(self.X_val,self.y_val)
+					validation_error,validation_accuracy = self.batch_test(self.X_val,self.y_val)
+					_,training_accuracy = self.batch_test(X,y)
 					self.errors['validation'].append(validation_error)
+					self.accuracy['validation'].append(validation_accuracy)
+					self.accuracy['training'].append(training_accuracy)
 			self.errors['training'].append(np.mean(batch_error))
 
 	def summary(self):

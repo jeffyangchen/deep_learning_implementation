@@ -29,11 +29,14 @@ mnist_net.add_layer(Activation(activation_function = Softmax))
 mnist_net.summary()
 mnist_net.fit(X,y,n_epochs = 50,validation_test = True)
 
-training_errors = mnist_net.errors['training']
-validation_errors = mnist_net.errors['validation']
-print validation_errors
+training_errors,training_accuracy = mnist_net.errors['training'],mnist_net.accuracy['training']
+validation_errors,validation_accuracy = mnist_net.errors['validation'],mnist_net.accuracy['validation']
+
 labels = ['Training Error','Validation Error']
-plotter(range(len(training_errors)),[training_errors,validation_errors],labels = labels)
+plotter(range(len(training_errors)),[training_errors,validation_errors],labels = labels,title = 'Error Plot')
+
+labels = ['Training Accuracy','Validation Accuracy']
+plotter(range(len(training_accuracy)),[training_accuracy,validation_accuracy],labels = labels,title = 'Accuracy Plot')
 
 loss,accuracy = mnist_net.batch_test(X_test,y_test)
 print accuracy
