@@ -6,5 +6,5 @@ Implementation of deep learning algorithms for self understanding.
 * MNielsen's free online deep learning book: http://neuralnetworksanddeeplearning.com/
 * Implementation ideas from eriklindernoren ML from scratch: https://github.com/eriklindernoren/ML-From-Scratch
 
+![alt text](https://github.com/jeffyangchen/deep_learning_implementation/blob/master/newplot.png)
 
-![alt text](https://github.com/jeffyangchen/deep_learning_implementation/newplot.png)
