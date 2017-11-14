@@ -39,7 +39,7 @@ loss,accuracy = mnist_net.batch_test(X_test,y_test)
 print accuracy
 ```
 
-![alt text](https://github.com/jeffyangchen/deep_learning_implementation/blob/master/newplot.png)
+![alt text](https://github.com/jeffyangchen/deep_learning_implementation/blob/master/error_plot.png)
 
 ![alt text](error_plot.png)
 
