@@ -10,13 +10,17 @@ class neural_net(object):
 	"""
 	network archeticture is determined by structure of individual layers
 	"""
-	def __init__(self,input_features = None,optimizer = None,loss_function = None):
+	def __init__(self,input_features = None,optimizer = None,loss_function = None,validation_set = None):
 		self.layers = []
 		self.input_features = input_features
 		self.optimizer = optimizer
 		self.loss_function = loss_function()
 		self.errors = {'training':[],'validation':[]}
 		#self.progressbar = progressbar.ProgressBar(widgets = bar_widgets)
+		self.validation_set = validation_set
+		if self.validation_set is not None:
+			self.X_val = self.validation_set[0]
+			self.y_val = self.validation_set[1]
 
 	def add_layer(self,layer):
 		if self.layers:
@@ -60,7 +64,7 @@ class neural_net(object):
 		accuracy = self.loss_function.accuracy(y, y_pred)
 		return loss, accuracy
 
-	def fit(self,X,y,n_epochs):
+	def fit(self,X,y,n_epochs,validation_test = False):
 		"""Trains using batch SGD for a number of epochs"""
 		#for _ in range(n_epochs):
 		for _ in range(n_epochs):
@@ -68,6 +72,12 @@ class neural_net(object):
 			for X_batch,y_batch in batch_iterator(X,y):
 				loss,accuracy = self.batch_train(X_batch,y_batch)
 				batch_error.append(loss)
+			if validation_test == True:
+				if self.validation_set == None:
+					print 'Validation Set Needed! (Set Validation_test to False on fit)'
+				else:
+					validation_error,accuracy = self.batch_test(self.X_val,self.y_val)
+					self.errors['validation'].append(validation_error)
 			self.errors['training'].append(np.mean(batch_error))
 
 	def summary(self):

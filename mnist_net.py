@@ -18,19 +18,20 @@ training_data,validation_data,test_data = load_data_wrapper()
 
 X,y = unwind_data_wrapper(training_data)
 X_test,y_test = unwind_data_wrapper(test_data)
-X_val, y_val = unwind_data_wrapper(validation_data)
+X_val,y_val = unwind_data_wrapper(validation_data)
 
 n_features = 784
-mnist_net = neural_net(input_features = n_features, optimizer = SGD(learning_rate = 0.01, batch_size = 64), loss_function = Cross_Entropy)
+mnist_net = neural_net(input_features = n_features, optimizer = SGD(learning_rate = 0.01, batch_size = 64), loss_function = Cross_Entropy,validation_set = (X_val,y_val))
 mnist_net.add_layer(Connected(n_neurons = 100))
 mnist_net.add_layer(Activation(activation_function = RLU))
 mnist_net.add_layer(Connected(n_neurons = 10))
 mnist_net.add_layer(Activation(activation_function = Softmax))
 mnist_net.summary()
-mnist_net.fit(X,y,n_epochs = 50)
+mnist_net.fit(X,y,n_epochs = 50,validation_test = True)
 
 training_errors = mnist_net.errors['training']
 validation_errors = mnist_net.errors['validation']
+print validation_errors
 labels = ['Training Error','Validation Error']
 plotter(range(len(training_errors)),[training_errors,validation_errors],labels = labels)
 
