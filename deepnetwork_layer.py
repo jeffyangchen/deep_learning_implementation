@@ -121,3 +121,16 @@ class Activation(Layer):
 
     def output_shape(self):
         return self.input_shape
+
+# class Convolution(Layer):
+#     """
+#     Convolution Layer
+#     """
+#
+#     def __init__(self):
+#
+#     def forward_pass(self,X,training = True):
+#     def backward_pass(self,error):
+#
+#     def output_shape(self):
+
