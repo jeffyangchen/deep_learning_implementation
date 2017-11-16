@@ -6,7 +6,7 @@ Implementation of deep learning algorithms for self understanding.
 * MNielsen's free online deep learning book: http://neuralnetworksanddeeplearning.com/
 * Implementation ideas from eriklindernoren ML from scratch: https://github.com/eriklindernoren/ML-From-Scratch
 
-##### MLP with one hidden layer on the MNIST Digit Data
+##### MLP with one hidden layer on the MNIST Dataset
 ```python
 from deepnetwork import neural_net
 from deepnetwork_layer import *
