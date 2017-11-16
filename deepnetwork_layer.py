@@ -1,5 +1,6 @@
 import numpy as np
 import math
+import copy
 
 class Layer(object):
     """Abstract Class for Layer"""
@@ -55,8 +56,8 @@ class Connected(Layer):
         limit = 1 / math.sqrt(self.input_shape[0])
         self.W = np.random.uniform(-limit, limit, (self.input_shape[0], self.n_neurons))
         self.w0 = np.zeros((1, self.n_neurons))
-        self.W_optimizer = optimizer
-        self.w0_optimizer = optimizer
+        self.W_optimizer = copy.copy(optimizer)
+        self.w0_optimizer = copy.copy(optimizer)
 
     def parameters(self):
         #Returns the number of parameters

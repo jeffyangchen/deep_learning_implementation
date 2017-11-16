@@ -1,4 +1,5 @@
 import numpy as np
+import copy
 from deepnetwork_layer import *
 from activation_functions import *
 from learning_optimizers import *
