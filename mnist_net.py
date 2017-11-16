@@ -22,7 +22,7 @@ X_val,y_val = unwind_data_wrapper(validation_data)
 
 n_features = 784
 #SGD(learning_rate = 0.01, batch_size = 64,momentum = 0.9)
-optimizer = RMSProp(batch_size = 64)
+optimizer = Adam(batch_size = 64)
 mnist_net = neural_net(input_features = n_features, optimizer = optimizer, loss_function = Cross_Entropy,validation_set = (X_val,y_val))
 mnist_net.add_layer(Connected(n_neurons = 100))
 mnist_net.add_layer(Activation(activation_function = RLU))

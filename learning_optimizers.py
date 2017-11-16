@@ -64,18 +64,23 @@ class Adam(object):
     RMSprop with Momentum
     """
 
-    def __init__(self, learning_rate=0.01, decay_rate=0.9, batch_size=1):
+    def __init__(self, learning_rate=0.01,grad_decay_rate = 0.9 ,decay_rate=0.99, batch_size=1):
         self.learning_rate = learning_rate
         self.decay_rate = decay_rate
+        self.grad_decay_rate = grad_decay_rate
         self.cache = None
+        self.grad_cache = None
         self.batch_size = float(batch_size)
 
     def update(self, w, grad_w):
-        epsilon = 1e-5
+        epsilon = 1e-8
         if self.cache is None:
             self.cache = np.zeros(np.shape(w))
+        if self.grad_cache is None:
+           self.grad_cache = np.zeros(np.shape(w))
 
         self.cache = self.decay_rate * self.cache + (1 - self.decay_rate) * np.square(grad_w)
-        self.w_updt = grad_w / (np.sqrt(self.cache) + epsilon)
+        self.grad_cache = self.grad_decay_rate * self.grad_cache + (1-self.grad_decay_rate) * grad_w
+        self.w_updt = self.grad_cache / (np.sqrt(self.cache) + epsilon)
 
         return w - self.learning_rate * (1 / self.batch_size) * self.w_updt
