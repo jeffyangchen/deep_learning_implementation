@@ -21,7 +21,9 @@ X_test,y_test = unwind_data_wrapper(test_data)
 X_val,y_val = unwind_data_wrapper(validation_data)
 
 n_features = 784
-mnist_net = neural_net(input_features = n_features, optimizer = SGD(learning_rate = 0.01, batch_size = 64,momentum = 0.9), loss_function = Cross_Entropy,validation_set = (X_val,y_val))
+#SGD(learning_rate = 0.01, batch_size = 64,momentum = 0.9)
+optimizer = RMSProp(batch_size = 64)
+mnist_net = neural_net(input_features = n_features, optimizer = optimizer, loss_function = Cross_Entropy,validation_set = (X_val,y_val))
 mnist_net.add_layer(Connected(n_neurons = 100))
 mnist_net.add_layer(Activation(activation_function = RLU))
 mnist_net.add_layer(Connected(n_neurons = 10))
