@@ -1,5 +1,5 @@
 # Deep Learning Implementation
-Implementation of deep learning algorithms for self understanding.
+Implementation of deep learning algorithms in Python for self understanding.
 
 ### References:
 * Goodfellow,Bengio, and Courville Deep Learning Book: http://www.deeplearningbook.org/
